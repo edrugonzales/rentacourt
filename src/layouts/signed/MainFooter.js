@@ -86,7 +86,7 @@ export default function MainFooter() {
             textAlign: { xs: 'center', md: 'center' }
           }}
         >
-          © 2022. All rights reserved. 7 Star Manpower Services of the Philippines Corporation.
+          © 2022. All rights reserved. Rent A Court.
         </Typography>
       </Container>
     </RootStyle>
