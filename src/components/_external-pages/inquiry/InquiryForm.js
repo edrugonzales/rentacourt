@@ -63,7 +63,7 @@ export default function InquiryForm() {
             color="common.black"
             sx={{ textAlign: 'center', my: { xs: 2, md: 3 } }}
           >
-            Business Solutions Made For You.
+            RentACourt: Tailored Solutions for Your Game.
           </Typography>
           <Typography
             component="p"
@@ -71,7 +71,7 @@ export default function InquiryForm() {
             color="common.black"
             sx={{ textAlign: 'center', my: { xs: 2, md: 1 } }}
           >
-            Your goals are our goals too
+            Your victories are our mission too.
           </Typography>
           <Typography
             component="p"
@@ -85,9 +85,7 @@ export default function InquiryForm() {
               mx: 'auto'
             }}
           >
-            We are invested in each and every one of our client’s success. We aim to become a dependable partner you can
-            trust in enabling you to execute your business strategies, enhance competitive advantages, and bring
-            cost-effective results. When you choose to partner with us, we’re in it for the long haul.
+            RentACourt: Your winning partner. We offer more than just courts - we're your ticket to success. With us, execute strategies flawlessly, gain a competitive edge, and achieve cost-effective results. Join us, and let's conquer the game together.
           </Typography>
           <Box sx={{ textAlign: 'center', mb: 10, mt: 3 }}>
             <FormikProvider value={formik}>
@@ -127,21 +125,6 @@ export default function InquiryForm() {
                         />
                         <TextField
                           fullWidth
-                          label="Company"
-                          {...getFieldProps('company')}
-                          error={Boolean(touched.company && errors.company)}
-                          helperText={touched.company && errors.company}
-                        />
-                        <TextField
-                          fullWidth
-                          label="Service"
-                          {...getFieldProps('service')}
-                          error={Boolean(touched.service && errors.service)}
-                          helperText={touched.service && errors.service}
-                        />
-
-                        <TextField
-                          fullWidth
                           multiline
                           minRows={3}
                           maxRows={5}
@@ -157,6 +140,7 @@ export default function InquiryForm() {
                           type="submit"
                           variant="contained"
                           size="large"
+                          style={{ backgroundColor: "#ff9800", color: '#fff' }}
                           sx={{
                             backgroundColor: 'blue.main',
                             transition: 'all 0.4s ease',

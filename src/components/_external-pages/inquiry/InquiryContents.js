@@ -51,7 +51,7 @@ export default function InquiryContents() {
                 Let’s Meet
               </Typography>
               <Typography variant="p" sx={{ mb: 3, fontWeight: '400' }} color="common.white">
-                Unit 503 FERN Building I, 827 P. Paredes Street, Sampaloc, Manila <br />
+                Maximina Street, Villa Arca Ave, Project 8, Quezon City <br />
                 <br />
                 Monday-Friday 8:00-5:00 PM
               </Typography>
@@ -75,7 +75,7 @@ export default function InquiryContents() {
                 Drop us an Email
               </Typography>
               <Typography variant="p" sx={{ mb: 3, fontWeight: '400' }} color="common.white">
-                7star.temporary@gmail.com
+                rentacourt.temporary@gmail.com
               </Typography>
             </motion.div>
           </Grid>
@@ -92,13 +92,7 @@ export default function InquiryContents() {
                 Give us a call
               </Typography>
               <Typography variant="p" sx={{ mb: 3, fontWeight: '400' }} color="common.white">
-                Human resource department – (02) 8251 5139
-                <br />
-                <br />
-                Finance department – (02) 8230 4253
-                <br />
-                <br />
-                Training and development department – (02) 8251 5139
+                (02) 1234 5647
               </Typography>
             </motion.div>
           </Grid>

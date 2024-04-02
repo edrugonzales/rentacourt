@@ -24,7 +24,6 @@ export default function InquiryPage() {
       <InquiryHero />
       <ContentStyle>
         <InquiryForm />
-        <InquiryContents />
       </ContentStyle>
     </RootStyle>
   );
