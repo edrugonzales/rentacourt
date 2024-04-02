@@ -20,7 +20,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function InquiryPage() {
   return (
-    <RootStyle title="Inquiry - 7 Star Manpower Services of Philippines Corporation" id="move_top">
+    <RootStyle title="Rent-A-Court" id="move_top">
       <InquiryHero />
       <ContentStyle>
         <InquiryForm />
