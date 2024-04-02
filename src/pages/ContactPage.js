@@ -20,10 +20,9 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function ContactPage() {
   return (
-    <RootStyle title="Contact Us - 7 Star Manpower Services of Philippines Corporation" id="move_top">
+    <RootStyle title="Contact Us - Rent A Court" id="move_top">
       <ContactHero />
       <ContentStyle>
-        <ContactContents />
         <ContactForm />
       </ContentStyle>
     </RootStyle>

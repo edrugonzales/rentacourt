@@ -56,22 +56,22 @@ export default function ContactForm() {
 
   return (
     <>
-      <RootStyle>
-        <Container maxWidth="lg">
+      <RootStyle style={{ backgroundColor: "#ff9800", color: '#fff' }}>
+        <Container maxWidth="lg" >
           <Typography
             component="h2"
             variant="h3"
             color="common.white"
             sx={{ textAlign: 'center', my: { xs: 2, md: 3 }, fontWeight: '400' }}
           >
-            Message Us
           </Typography>
-          <Box sx={{ textAlign: 'center', mb: 10 }}>
+          <Box sx={{ textAlign: 'center', mb: 10 }} >
             <FormikProvider value={formik}>
               <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
                 <Grid
                   container
                   spacing={3}
+
                   sx={{
                     justifyContent: 'center',
                     width: { xs: '100%', md: '45%' },
@@ -114,12 +114,13 @@ export default function ContactForm() {
                           helperText={touched.message && errors.message}
                         />
                       </Stack>
-                      <Stack direction="row" justifyContent="flex-end" sx={{ mt: 3 }}>
+                      <Stack direction="row" justifyContent="flex-end" sx={{ mt: 3 }} >
                         <LoadingButton
                           fullWidth
                           type="submit"
                           variant="contained"
                           size="large"
+                          style={{ backgroundColor: "#ff9800", color: '#fff' }}
                           sx={{
                             backgroundColor: 'blue.main',
                             transition: 'all 0.4s ease',

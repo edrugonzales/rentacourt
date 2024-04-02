@@ -61,13 +61,12 @@ export default function Router() {
         { path: '/', element: <LandingPage /> },
         /*{ path: '/about-us', element: <AboutPage /> },*/
         { path: '/services', element: <ServicesPage /> },
-        { path: '/news-events', element: <NewsPage /> },
         { path: '/contact-us', element: <ContactPage /> },
         { path: '/inquiry', element: <InquiryPage /> },
         { path: '/login', element: <LoginPage /> },
-        { path: '/apply', element: <ApplicationPage /> },
+/*        { path: '/apply', element: <ApplicationPage /> },
         { path: '/apply/success', element: <ApplicationPageSuccess /> },
-        { path: '/apply/member', element: <MemberPage /> }
+        { path: '/apply/member', element: <MemberPage /> }*/
       ]
     },
     { path: '*', element: <Navigate to="/404" replace /> }
@@ -81,7 +80,6 @@ const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
 const AboutPage = Loadable(lazy(() => import('../pages/AboutPage')));
 const ServicesPage = Loadable(lazy(() => import('../pages/ServicesPage')));
-const NewsPage = Loadable(lazy(() => import('../pages/NewsPage')));
 const ContactPage = Loadable(lazy(() => import('../pages/ContactPage')));
 const InquiryPage = Loadable(lazy(() => import('../pages/InquiryPage')));
 const LoginPage = Loadable(lazy(() => import('../pages/LoginPage')));

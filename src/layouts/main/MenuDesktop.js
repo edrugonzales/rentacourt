@@ -268,7 +268,7 @@ export default function MenuDesktop({ isOffset, isHome, navConfig }) {
           }
         }}
       >
-        <Button component="p" variant="contained" size="large" color="blue" sx={{ width: 150 }}>
+        <Button component="p" variant="contained" size="large" style={{ backgroundColor: "#ff9800", color: '#fff' }} sx={{ width: 150 }}>
           Rent Now
         </Button>
       </Link>

@@ -115,7 +115,7 @@ export default function LandingHero() {
                   variant="contained"
                   sx={{ boxShadow: 'none', mt: 3 }}
                   endIcon={<Icon icon={flashFill} width={20} height={20} />}
-                  color="blue"
+                  style={{ backgroundColor: "#ff9800", color: '#fff' }}
                 >
                   Available Court
                 </Button>

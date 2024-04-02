@@ -59,6 +59,7 @@ export default function ServicesQuestion() {
                   component="p"
                   variant="contained"
                   size="large"
+                  style={{ backgroundColor: "#ff9800", color: '#fff' }}
                   sx={{
                     width: '100%',
                     fontSize: 18,

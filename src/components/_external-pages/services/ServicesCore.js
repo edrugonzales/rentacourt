@@ -1,7 +1,7 @@
 // material
 import { styled } from '@material-ui/core/styles';
 import { Container, Typography, Card, Box, Grid } from '@material-ui/core';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 //
 import { motion } from 'framer-motion';
 import { varFadeInDown } from '../../animate';
@@ -9,8 +9,25 @@ import {
   Modal,
   Button,
   Backdrop,
-  Fade 
+  Fade,
+  Stack,
+  TextField,
+  IconButton,
+  InputAdornment 
 } from '@material-ui/core';
+import { Link } from '@mui/material';
+import { Icon } from '@iconify/react';
+import eyeFill from '@iconify/icons-eva/eye-fill';
+import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
+import { LoadingButton } from '@material-ui/lab';
+import user_api from '../../../api/user';
+import SecureLS from 'secure-ls';
+import 'react-date-range/dist/styles.css'
+import 'react-date-range/dist/theme/default.css'
+import { DateRangePicker } from 'react-date-range'
+import { addDays } from 'date-fns';
+import moment from 'moment';
+const ls = new SecureLS({ encodingType: "aes" });
 const RootStyle = styled('div')(() => ({
   position: 'relative',
   marginBottom: 64,
@@ -95,15 +112,143 @@ const style = {
 
 export default function ServicesCore() {
   const [openRent, setOpenRent] = useState(false)
+  const [openLogin, setOpenLogin] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [openRegister, setOpenRegister] = useState(false);
+  const [openChooseDate, setOpenChooseDate] = useState(false);
+  const [openReceipt, setOpenReceipt] = useState(false);
+  const [timeFrom, setTimeFrom] = useState(new Date())
+  const [timeTo, setTimeTo] = useState(new Date())
+  const [scheduleDate, setScheduleDate] = useState();
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [registerContact, setRegisterContact] = useState("");
+  const [registerName, setRegisterName] = useState("");
   const [court, setCourt] = useState({})
+
+  const defaultValue = {
+    startDate: new Date(),
+      endDate: new Date(),
+      key: 'selection'
+  };
+  const [selectedDayRange, setSelectedDayRange] = useState([defaultValue]);
+  const getCurrentDate = () => {
+    return moment().format('YYYY-MM-DD');
+  };
   const handleClickRent = (value) => {
-    console.log(value)
     setCourt({courtId: value.id, courtImage: value.image, courtTitle: value.title, courtDesc: value.description, courtRate: value.rate})
     setOpenRent(true)
   }
   const handleCloseRent = () => {
     setOpenRent(false)
   }
+  const handleOpenLogin = () => {
+    const token = ls.get("token")
+    
+    if(token) {
+      setOpenRent(false)
+      setOpenChooseDate(true)
+    }
+    else {
+      setOpenRent(false)
+      setOpenLogin(true)
+      setOpenRegister(false) 
+    }
+
+  }
+  const handleCloseLogin = () => {
+    setOpenLogin(false)
+  }
+  const handleShowPassword = () => {
+    setShowPassword((show) => !show);
+  };
+  const handleSignIn = async () => {
+    if (!email || !password) {
+      // Display error message or prevent form submission
+      alert('All fields are required');
+      return;
+    }
+    else {
+      const data = {
+        email: email,
+        password: password,
+      }
+      const result = await user_api.sign_in_email(data)
+      if(result.status !== 200) {
+        alert(result.data.msg)
+      }
+      else {
+        ls.set("token", result.data.token)
+        alert("Login Succesful")
+        setOpenRegister(false)
+        setOpenLogin(false)
+        setOpenRent(true)
+      }
+    }
+  };
+  const handleOpenRegister = () => {
+    setOpenRegister(true);
+  };
+  const handleCloseRegister = () => {
+    setOpenRegister(false);
+  };
+  const handleSignUp = async () => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!registerEmail || !registerPassword || !registerContact || !registerName) {
+      // Display error message or prevent form submission
+      alert('All fields are required');
+      return;
+    }
+    else if (!regex.test(registerEmail)) {
+      alert("Invalid email address");
+    }
+    else {
+      const data = {
+        email: registerEmail,
+        password: registerPassword,
+        phone: registerContact,
+        name: registerName
+      }
+      const result = await user_api.sign_up_email(data)
+      if(result.status !== 200) {
+        alert(result.data.msg)
+      }
+      else {
+        alert("Registration Succesful")
+        setOpenRegister(false)
+        setOpenLogin(true)
+      }
+    }
+  };
+  const handleOpenChooseDate = () => {
+    setOpenChooseDate(true);
+  };
+  const handleCloseChooseDate = () => {
+    setOpenChooseDate(false);
+  };
+  const handleReserve = () => {
+    if (!scheduleDate || !timeFrom || !timeTo) {
+      // Display error message or prevent form submission
+      alert('All fields are required');
+      return;
+    }
+    else {
+      alert("You have save the date " + scheduleDate)
+      setOpenChooseDate(false); 
+      handleOpenReceipt(true);
+    }
+
+  };
+  const handleOpenReceipt = () => {
+    setOpenReceipt(true);
+  };
+  const handleCloseReceipt = () => {
+    setOpenReceipt(false);
+  };
   return (
     <RootStyle
       sx={{
@@ -191,12 +336,380 @@ export default function ServicesCore() {
                     Flooring (Wood?): Yes
                     Parking Information: Free (First come first serve)
                   </Typography>
-                  <Button variant="contained" color="success" sx={{ mt: 2, px: 17, mb: 2 }}>
+                  <Button variant="contained"  style={{ backgroundColor: "#ff9800", color: '#fff' }} onClick={handleOpenLogin} sx={{ mt: 2, px: 17, mb: 2 }}>
                     Rent
                   </Button>
                 </Box>
               </Card>
 
+            </Box>
+          </Fade>
+        </Modal>
+        <Modal
+          aria-labelledby="spring-modal-title"
+          aria-describedby="spring-modal-description"
+          open={openLogin}
+          onClose={handleCloseLogin}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={openLogin}>
+            <Box sx={style}>
+              <Typography
+                component="h2"
+                variant="h3"
+                color="common.black"
+                sx={{ textAlign: 'center', my: { xs: 2, md: 3 } }}
+              >
+                Login
+              </Typography>
+              <Box sx={{ textAlign: 'center', mb: 10, mt: 3 }}>
+                <Stack spacing={3}>
+                  <TextField
+                    fullWidth
+                    label="Email address"
+                    type="email"
+                    value={email}
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+    
+                  />
+
+                  <TextField
+                    fullWidth
+                    autoComplete="current-password"
+                    type={showPassword ? 'text' : 'password'}
+                    label="Password"
+                    value={password}
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={handleShowPassword} edge="end">
+                            <Icon icon={showPassword ? eyeFill : eyeOffFill} />
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                </Stack>
+                <Stack direction="row" justifyContent="flex-end" sx={{ mt: 3 }}>
+                  <LoadingButton
+                    fullWidth
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    style={{ backgroundColor: "#ff9800", color: '#fff' }}
+                    sx={{
+                      backgroundColor: 'blue.main',
+                      transition: 'all 0.4s ease',
+                      '&:hover': {
+                        backgroundColor: 'blue.light',
+                        transition: 'all 0.4s ease'
+                      }
+                    }}
+                    loading={isSubmitting}
+                    onClick={handleSignIn}
+                  >
+                    Sign in
+                  </LoadingButton>
+                </Stack>
+                <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
+                  <Typography
+                    component="h5"
+                    variant="h5"
+                    color="common.black"
+                    sx={{ textAlign: 'center', my: { xs: 2 } }}
+                  >
+                    No account yet? <Link href="#" onClick={handleOpenRegister} >Sign up</Link>
+                  </Typography>
+                </Stack>
+              </Box>
+
+            </Box>
+          </Fade>
+        </Modal>
+        <Modal
+          aria-labelledby="spring-modal-title"
+          aria-describedby="spring-modal-description"
+          open={openRegister}
+          onClose={handleCloseRegister}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={openRegister}>
+            <Box sx={style}>
+              <Typography
+                component="h2"
+                variant="h3"
+                color="common.black"
+                sx={{ textAlign: 'center', my: { xs: 2, md: 3 } }}
+              >
+                Register
+              </Typography>
+              <Box sx={{ textAlign: 'center', mb: 10, mt: 3 }}>
+                <Stack spacing={3}>
+                  <TextField
+                    fullWidth
+                    label="Email address"
+                    type="text"
+                    value={registerEmail}
+                    required
+                    onChange={(e) => setRegisterEmail(e.target.value)}
+                  />
+
+                  <TextField
+                    fullWidth
+                    type={showPassword ? 'text' : 'password'}
+                    label="Password"
+                    value={registerPassword}
+                    required
+                    onChange={(e) => setRegisterPassword(e.target.value)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={handleShowPassword} edge="end">
+                            <Icon icon={showPassword ? eyeFill : eyeOffFill} />
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="Contact"
+                    value={registerContact}
+                    required
+                    onChange={(e) => setRegisterContact(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    type="text"
+                    label="Fullname"
+                    value={registerName}
+                    required
+                    onChange={(e) => setRegisterName(e.target.value)}
+                  />
+                </Stack>
+                <Stack direction="row" justifyContent="flex-end" sx={{ mt: 3 }}>
+                  <LoadingButton
+                    fullWidth
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    style={{ backgroundColor: "#ff9800", color: '#fff' }}
+                    sx={{
+                      backgroundColor: 'blue.main',
+                      transition: 'all 0.4s ease',
+                      '&:hover': {
+                        backgroundColor: 'blue.light',
+                        transition: 'all 0.4s ease'
+                      }
+                    }}
+                    loading={isSubmitting}
+                    onClick={handleSignUp}
+                  >
+                    Sign up
+                  </LoadingButton>
+                </Stack>
+                <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
+                  <Typography
+                    component="h5"
+                    variant="h5"
+                    color="common.black"
+                    sx={{ textAlign: 'center', my: { xs: 2 } }}
+                  >
+                    Already have an account? <Link href="#" onClick={handleOpenLogin}>Sign in</Link>
+                  </Typography>
+                </Stack>
+              </Box>
+
+            </Box>
+          </Fade>
+        </Modal>
+        <Modal
+          aria-labelledby="spring-modal-title"
+          aria-describedby="spring-modal-description"
+          open={openChooseDate}
+          onClose={handleCloseChooseDate}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={openChooseDate}>
+            <Box sx={style} style={{width:"35%"}}>
+              <Typography
+                component="h2"
+                variant="h3"
+                color="common.black"
+                sx={{ textAlign: 'center', my: { xs: 2, md: 3 } }}
+              >
+                Choose time and date
+              </Typography>
+              <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
+                <TextField
+                    id="date"
+                    label="Date"
+                    type="date"
+                    value={scheduleDate}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    inputProps={{
+                      min: getCurrentDate(), // Set minimum date to current date
+                    }}
+                    style={{"height": "100%", "width": "100%"}}
+                    onChange={(e) => setScheduleDate(e.target.value)}
+                />
+              </Stack>
+              <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
+                <TextField
+                  id="from"
+                  label="From"
+                  type="time"
+                  value={timeFrom}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    step: 300, // 5 min
+                }}
+                  style={{"height": "100%", "width": "100%"}}
+                  onChange={(e) => setTimeFrom(e.target.value)}
+                />
+              </Stack>
+              <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
+                <TextField
+                  id="to"
+                  label="To"
+                  type="time"
+                  value={timeTo}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    step: 300, // 5 min
+                }}
+                  style={{"height": "100%", "width": "100%"}}
+                  onChange={(e) => setTimeTo(e.target.value)}
+                />
+              </Stack>
+              <Stack direction="row" justifyContent="flex-end" sx={{ mt: 3 }}>
+                <LoadingButton
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  style={{ backgroundColor: "#ff9800", color: '#fff' }}
+                  sx={{
+                    backgroundColor: 'blue.main',
+                    transition: 'all 0.4s ease',
+                    '&:hover': {
+                      backgroundColor: 'blue.light',
+                      transition: 'all 0.4s ease'
+                    }
+                  }}
+                  loading={isSubmitting}
+                  onClick={handleReserve}
+                >
+                  Reserve
+                </LoadingButton>
+              </Stack>
+            </Box>
+          </Fade>
+        </Modal>
+        <Modal
+          aria-labelledby="spring-modal-title"
+          aria-describedby="spring-modal-description"
+          open={openReceipt}
+          onClose={handleCloseReceipt}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={openReceipt}>
+            <Box sx={style} style={{width:"35%"}}>
+              <Typography
+                component="h2"
+                variant="h3"
+                color="common.black"
+                sx={{ textAlign: 'center', my: { xs: 2, md: 3 } }}
+              >
+                Summary of transaction
+              </Typography>
+              <Stack direction="row" justifyContent="center" sx={{ mt: 1 }}>
+                <Typography
+                  component="h5"
+                  variant="h5"
+                  color="common.black"
+                  sx={{ textAlign: 'center', my: { xs: 2, md: 3 } }}
+                >
+                  Court Name: {court.courtTitle}
+                </Typography>
+              </Stack>
+              <Stack direction="row" justifyContent="center" sx={{ mt: 1 }}>
+                <Typography
+                  component="h5"
+                  variant="h5"
+                  color="common.black"
+                  sx={{ textAlign: 'center', my: { xs: 2, md: 3 } }}
+                >
+                  Court Location: {court.courtDesc}
+                </Typography>
+              </Stack>
+              <Stack direction="row" justifyContent="center" sx={{ mt: 1 }}>
+                <Typography
+                  component="h5"
+                  variant="h5"
+                  color="common.black"
+                  sx={{ textAlign: 'center', my: { xs: 2, md: 3 } }}
+                >
+                  Date of reservation: {scheduleDate}
+                </Typography>
+              </Stack>
+              <Stack direction="row" justifyContent="center" sx={{ mt: 1 }}>
+                <Typography
+                  component="h5"
+                  variant="h5"
+                  color="common.black"
+                  sx={{ textAlign: 'center', my: { xs: 2, md: 3 } }}
+                >
+                  Time of reservation: {timeFrom} - {timeTo}
+                </Typography>
+              </Stack>
+              <Stack direction="row" justifyContent="flex-end" sx={{ mt: 3 }}>
+                <LoadingButton
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  style={{ backgroundColor: "#ff9800", color: '#fff' }}
+                  sx={{
+                    backgroundColor: 'blue.main',
+                    transition: 'all 0.4s ease',
+                    '&:hover': {
+                      backgroundColor: 'blue.light',
+                      transition: 'all 0.4s ease'
+                    }
+                  }}
+                  loading={isSubmitting}
+                  onClick={handleCloseReceipt}
+                >
+                  Close
+                </LoadingButton>
+              </Stack>
             </Box>
           </Fade>
         </Modal>

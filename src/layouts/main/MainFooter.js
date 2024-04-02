@@ -24,17 +24,12 @@ export default function MainFooter() {
           justifyContent={{ xs: 'center', md: 'center' }}
           sx={{ textAlign: { xs: 'center', md: 'left' } }}
         >
-          <Grid item xs={12} sx={{ mb: 10, mx: 'auto' }}>
-            <ScrollLink to="move_top" spy smooth>
-              <Box component="img" src="/static/logo.png" sx={{ width: 250, objectFit: 'contain', mx: 'auto' }} />
-            </ScrollLink>
-          </Grid>
           <Grid item xs={12} md={5} sx={{ textAlign: 'center' }}>
             <Typography variant="overline" sx={{ pr: { md: 5 } }}>
               Office address
             </Typography>
             <Typography variant="body2" sx={{ pr: { md: 5 }, mb: 3 }}>
-              Unit 503 FERN Building I, 827 P. Paredes Street, Sampaloc, Manila
+              Maximina Street, Villa Arca Ave, Project 8, Quezon City
             </Typography>
           </Grid>
 
@@ -43,7 +38,7 @@ export default function MainFooter() {
               Email address
             </Typography>
             <Typography variant="body2" sx={{ pr: { md: 5 }, mb: 3 }}>
-              7star.temporary@gmail.com
+              rentacourt.temporary@gmail.com
             </Typography>
           </Grid>
           <Grid item xs={12} md={3} sx={{ textAlign: 'center' }}>
@@ -51,29 +46,8 @@ export default function MainFooter() {
               Call
             </Typography>
             <Typography variant="body2" sx={{ pr: { md: 5 }, mb: 3 }}>
-              (02) 8251 5139
+              (02) 1234 5647
             </Typography>
-          </Grid>
-          <Grid item xs={12} md={1}>
-            <Stack direction="row" justifyContent={{ xs: 'center', md: 'center' }} sx={{ mt: 1, mb: { xs: 5, md: 0 } }}>
-              <Link
-                rel="noreferrer"
-                target="_blank"
-                href="https://www.facebook.com/7-Star-Manpower-Services-of-the-Philippines-Corp-633111266817755"
-                sx={{
-                  color: 'common.grey',
-                  mx: 2,
-                  transition: 'all 0.4s ease',
-                  '&:hover': {
-                    color: 'common.blue',
-                    transform: 'scale(1.1)',
-                    transition: 'all 0.4s ease'
-                  }
-                }}
-              >
-                <Icon icon={facebookFill} width={24} height={24} color="blue" />
-              </Link>
-            </Stack>
           </Grid>
         </Grid>
         <Typography
