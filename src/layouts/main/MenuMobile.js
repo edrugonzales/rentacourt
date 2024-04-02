@@ -229,8 +229,8 @@ export default function MenuMobile({ isOffset, isHome }) {
               href="/apply"
               rel="noreferrer"
             >
-              <Button component="p" variant="contained" size="large" color="blue" sx={{ width: '80%', mx: 'auto' }}>
-                Apply Now
+              <Button component="p" variant="contained" size="large" style={{ backgroundColor: "#ff9800", color: '#fff' }} sx={{ width: '80%', mx: 'auto' }}>
+                Rent Now
               </Button>
             </Link>
           </List>
