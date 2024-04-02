@@ -542,12 +542,13 @@ export default function ServicesCore() {
           onClose={handleCloseChooseDate}
           closeAfterTransition
           BackdropComponent={Backdrop}
+          style={{"height": "100%", "width": "100%"}}
           BackdropProps={{
             timeout: 500,
           }}
         >
           <Fade in={openChooseDate}>
-            <Box sx={style} style={{width:"35%"}}>
+            <Box sx={style} style={{width:"100%"}}>
               <Typography
                 component="h2"
                 variant="h3"
@@ -640,7 +641,7 @@ export default function ServicesCore() {
           }}
         >
           <Fade in={openReceipt}>
-            <Box sx={style} style={{width:"35%"}}>
+            <Box sx={style} style={{width:"100%"}}>
               <Typography
                 component="h2"
                 variant="h3"
